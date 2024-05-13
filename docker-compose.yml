@@ -4,7 +4,7 @@ networks:
 services:
   nginx:
     build:
-      context: ./dockerfiles
+      context: ./conf
       dockerfile: nginx.dockerfile
       args:
         - UID=${UID:-1000}
@@ -13,7 +13,7 @@ services:
       - "80:80"
     volumes:
       - ./conf/nginx/:/etc/nginx/conf.d/:delegated
-      - ./www:/var/www:delegated
+      - ./wwwroot:/var/www:delegated
     depends_on:
       - php
       - redis
@@ -28,7 +28,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./www/html:/var/www/html:delegated
+      - ./wwwdb:/var/lib/mysql
+      - ./wwwroot/htdocs:/var/www/htdocs:delegated
     environment:
       MYSQL_DATABASE: oosuite
       MYSQL_USER: oosuite
@@ -41,7 +42,7 @@ services:
 
   php:
     build:
-      context: ./dockerfiles
+      context: ./conf
       dockerfile: php.dockerfile
       args:
         - UID=${UID:-1000}
@@ -49,7 +50,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./www:/var/www:delegated
+      - ./wwwroot:/var/www:delegated
     networks:
       - oosuite
 
@@ -59,6 +60,6 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./www/html:/var/www/html:delegated
+      - ./wwwroot/htdocs:/var/www/htdocs:delegated
     networks:
       - oosuite

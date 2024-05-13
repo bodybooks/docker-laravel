@@ -13,6 +13,6 @@ RUN addgroup -g ${GID} --system www
 RUN adduser -G www --system -D -s /bin/sh -u ${UID} www
 RUN sed -i "s/user  nginx/user www/g" /etc/nginx/nginx.conf
 
-# ADD ../conf/default.conf /etc/nginx/conf.d/
+# ADD ./nginx/default.conf /etc/nginx/conf.d/
 
-RUN mkdir -p /var/www/html
+RUN mkdir -p /var/www/htdocs

@@ -6,9 +6,9 @@ ARG GID
 ENV UID=${UID}
 ENV GID=${GID}
 
-RUN mkdir -p /var/www/html
+RUN mkdir -p /var/www/htdocs
 
-WORKDIR /var/www/html
+WORKDIR /var/www/htdocs
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 

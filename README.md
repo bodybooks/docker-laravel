@@ -1,5 +1,5 @@
 # docker-laravel
-A pretty simplified Docker Compose workflow that sets up a LEMP network of containers for local Laravel development..
+A pretty simplified Docker Compose workflow that sets up a LEMP network of containers for local Laravel development.
 
 ## Usage
 
@@ -47,7 +47,7 @@ Then, either bring back up your container network or re-run the command you were
 
 By default, whenever you bring down the Docker network, your MySQL data will be removed after the containers are destroyed. If you would like to have persistent data that remains after bringing containers down and back up, do the following:
 
-1. Create a `mysql` folder in the project root, alongside the `nginx` and `src` folders.
+1. Create a `mysql` folder in the project root, alongside the `nginx` and `www` folders.
 2. Under the mysql service in your `docker-compose.yml` file, add the following lines:
 
 ```
@@ -57,7 +57,7 @@ volumes:
 
 ## Usage in Production
 
-While I originally created this template for local development, it's robust enough to be used in basic Laravel application deployments. The biggest recommendation would be to ensure that HTTPS is enabled by making additions to the `nginx_default.conf` file and utilizing something like [Let's Encrypt](https://hub.docker.com/r/linuxserver/letsencrypt) to produce an SSL certificate.
+While I originally created this template for local development, it's robust enough to be used in basic Laravel application deployments. The biggest recommendation would be to ensure that HTTPS is enabled by making additions to the `default.conf` file and utilizing something like [Let's Encrypt](https://hub.docker.com/r/linuxserver/letsencrypt) to produce an SSL certificate.
 
 ## Compiling Assets
 
