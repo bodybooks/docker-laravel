@@ -2,7 +2,7 @@ networks:
   oosuite:
 
 services:
-  app:
+  nginx:
     build:
       context: ./dockerfiles
       dockerfile: nginx.dockerfile
@@ -59,48 +59,48 @@ services:
     networks:
       - oosuite
 
-  composer:
-    build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-    volumes:
-      - ./src:/var/www/html
-    depends_on:
-      - php
-    entrypoint: [ 'composer' ]
-    networks:
-      - oosuite
+  # composer:
+  #   build:
+  #     context: ./dockerfiles
+  #     dockerfile: php.dockerfile
+  #     args:
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #   volumes:
+  #     - ./src:/var/www/html
+  #   depends_on:
+  #     - php
+  #   entrypoint: [ 'composer' ]
+  #   networks:
+  #     - oosuite
 
-  npm:
-    image: node:current-alpine
-    volumes:
-      - ./src:/var/www/html
-    ports:
-      - "3000:3000"
-      - "3001:3001"
-      - "5173:5173"
-    working_dir: /var/www/html
-    entrypoint: [ 'npm' ]
-    networks:
-      - oosuite
+  # npm:
+  #   image: node:current-alpine
+  #   volumes:
+  #     - ./src:/var/www/html
+  #   ports:
+  #     - "3000:3000"
+  #     - "3001:3001"
+  #     - "5173:5173"
+  #   working_dir: /var/www/html
+  #   entrypoint: [ 'npm' ]
+  #   networks:
+  #     - oosuite
 
-  artisan:
-    build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-    volumes:
-      - ./src:/var/www/html:delegated
-    depends_on:
-      - mysql
-    entrypoint: [ 'php', '/var/www/html/artisan' ]
-    networks:
-      - oosuite
+  # artisan:
+  #   build:
+  #     context: ./dockerfiles
+  #     dockerfile: php.dockerfile
+  #     args:
+  #       - UID=${UID:-1000}
+  #       - GID=${GID:-1000}
+  #   volumes:
+  #     - ./src:/var/www/html:delegated
+  #   depends_on:
+  #     - mysql
+  #   entrypoint: [ 'php', '/var/www/html/artisan' ]
+  #   networks:
+  #     - oosuite
 
   mailhog:
     image: mailhog/mailhog:latest
