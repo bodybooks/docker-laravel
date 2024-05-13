@@ -25,7 +25,7 @@ services:
       - oosuite
 
   mysql:
-    image: mariadb:latest
+    image: mariadb
     restart: unless-stopped
     tty: true
     ports:
