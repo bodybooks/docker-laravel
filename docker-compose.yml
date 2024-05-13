@@ -1,8 +1,5 @@
-version: '3'
-
 networks:
   oosuite:
-
 
 services:
   app:
@@ -73,7 +70,7 @@ services:
       - ./src:/var/www/html
     depends_on:
       - php
-    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+    entrypoint: [ 'composer' ]
     networks:
       - oosuite
 
