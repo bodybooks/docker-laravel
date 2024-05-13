@@ -12,12 +12,12 @@ services:
     ports:
       - "80:80"
     volumes:
+      - ./conf/nginx/:/etc/nginx/conf.d/:delegated
       - ./www:/var/www:delegated
     depends_on:
       - php
       - redis
       - mysql
-      - mailhog
     networks:
       - oosuite
 
