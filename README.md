@@ -7,7 +7,7 @@ To get started, make sure you have [Docker installed](https://docs.docker.com/) 
 
 Next, navigate in your terminal to the directory you cloned this, and spin up the containers for the web server by running `docker-compose up -d --build app`.
 
-After that completes, follow the steps from the [src/README.md](src/README.md) file to get your Laravel project added in (or create a new blank one).
+After that completes, follow the steps from the [README.md](README.md) file to get your Laravel project added in (or create a new blank one).
 
 **Note**: Your MySQL database host name should be `mysql`, **not** `localhost`. The username and database should both be `oosuite` with a password of `secret`. 
 
