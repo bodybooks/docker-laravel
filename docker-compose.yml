@@ -3,40 +3,40 @@ networks:
 
 services:
   nginx:
-    build:
-      context: ./conf
-      dockerfile: nginx.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
+    image: nginx:1.26.0
     ports:
       - "80:80"
+    container_name: nginx
     volumes:
-      - ./conf/nginx/:/etc/nginx/conf.d/:delegated
-      - ./wwwroot:/var/www:delegated
+      - ./conf/nginx:/etc/nginx/conf.d
+      - ./logs:/var/log/nginx
+      - ./wwwroot:/var/www
     depends_on:
       - php
       - redis
       - mysql
+    restart: unless-stopped
     networks:
       - oosuite
 
   mysql:
-    image: mariadb
+    image: mysql:8.4.0
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
+    container_name: mysql
     volumes:
+      - ./conf/mysql:/etc/mysql/conf.d
+      - ./logs:/var/log/mysql
       - ./wwwdb:/var/lib/mysql
-      - ./wwwroot/htdocs:/var/www/htdocs:delegated
+      - ./wwwroot/htdocs:/var/www/htdocs
     environment:
+      MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: oosuite
       MYSQL_USER: oosuite
       MYSQL_PASSWORD: Mark053
       MYSQL_ROOT_PASSWORD: Mark053
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
     networks:
       - oosuite
 
@@ -47,19 +47,24 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
+    restart: unless-stopped
     ports:
       - "9000:9000"
+    container_name: php
     volumes:
-      - ./wwwroot:/var/www:delegated
+      - ./wwwroot:/var/www
     networks:
       - oosuite
 
   redis:
-    image: redis:7.2.4-alpine
+    image: redis:7.2.4
     restart: unless-stopped
     ports:
       - "6379:6379"
+    container_name: redis
     volumes:
-      - ./wwwroot/htdocs:/var/www/htdocs:delegated
+      - ./conf/redis:/usr/local/etc/redis
+      - ./logs:/var/log/redis
+      - ./wwwroot/htdocs:/var/www/htdocs
     networks:
       - oosuite
