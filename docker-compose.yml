@@ -1,5 +1,5 @@
 networks:
-  oosuite:
+  vpc:
 
 services:
   nginx:
@@ -8,8 +8,8 @@ services:
       - "80:80"
     container_name: nginx
     volumes:
-      - ./conf/nginx:/etc/nginx/conf.d
-      - ./logs:/var/log/nginx
+      - ./conf/nginx:/etc/nginx
+      - ./log/nginx:/var/log/nginx
       - ./wwwroot:/var/www
     depends_on:
       - php
@@ -17,7 +17,7 @@ services:
       - mysql
     restart: unless-stopped
     networks:
-      - oosuite
+      - vpc
 
   mysql:
     image: mysql:8.4.0
@@ -27,10 +27,9 @@ services:
       - "3306:3306"
     container_name: mysql
     volumes:
-      - ./conf/mysql:/etc/mysql/conf.d
-      - ./logs:/var/log/mysql
+      - ./conf/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./log/mysql:/var/log/mysql
       - ./wwwdb:/var/lib/mysql
-      - ./wwwroot/htdocs:/var/www/htdocs
     environment:
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: oosuite
@@ -38,23 +37,22 @@ services:
       MYSQL_PASSWORD: Mark053
       MYSQL_ROOT_PASSWORD: Mark053
     networks:
-      - oosuite
+      - vpc
 
   php:
     build:
       context: ./conf
       dockerfile: php.dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
     restart: unless-stopped
     ports:
       - "9000:9000"
     container_name: php
     volumes:
+      - ./conf/php:/usr/local/etc/php-fpm.d
+      - ./log/php:/var/log/php
       - ./wwwroot:/var/www
     networks:
-      - oosuite
+      - vpc
 
   redis:
     image: redis:7.2.4
@@ -63,8 +61,7 @@ services:
       - "6379:6379"
     container_name: redis
     volumes:
-      - ./conf/redis:/usr/local/etc/redis
-      - ./logs:/var/log/redis
-      - ./wwwroot/htdocs:/var/www/htdocs
+      # - ./conf/redis:/usr/local/etc/redis
+      - ./log/redis:/var/log/redis
     networks:
-      - oosuite
+      - vpc

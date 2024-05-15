@@ -1,24 +1,12 @@
 FROM php:8.2-fpm
 
-ARG UID
-ARG GID
-
-ENV UID=${UID}
-ENV GID=${GID}
-
 RUN mkdir -p /var/www/web
 
 WORKDIR /var/www/web
 
-# MacOS staff group's gid is 20, so is the dialout group in alpine linux. We're not using it, let's just remove it.
-# RUN delgroup dialout
-
-RUN addgroup -g ${GID} --system www
-RUN adduser -G www --system -D -s /bin/sh -u ${UID} www
-
-RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf
-RUN sed -i "s/group = www-data/group = www/g" /usr/local/etc/php-fpm.d/www.conf
-RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
+# RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf
+# RUN sed -i "s/group = www-data/group = www/g" /usr/local/etc/php-fpm.d/www.conf
+# RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
 # composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
@@ -63,7 +51,5 @@ RUN apt update && apt install -y --no-install-recommends libzip-dev && rm -r /va
 
 # opcache 扩展 
 RUN docker-php-ext-configure opcache --enable-opcache && docker-php-ext-install opcache
-    
-USER www
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
