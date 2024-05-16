@@ -1,7 +1,8 @@
 FROM php:8.2-fpm
 
 RUN mkdir -p /var/www/web
-
+RUN chown -R www-data:www-data /var/www/web
+RUN chmod -R 755 /var/www/web
 WORKDIR /var/www/web
 
 # RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf
@@ -10,6 +11,9 @@ WORKDIR /var/www/web
 
 # composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# git
+RUN apt update && apt install -y git
 
 # PHP 容器配置
 
@@ -47,7 +51,7 @@ RUN apt-get update && apt-get install -y \
 	&& docker-php-ext-install -j$(nproc) gd
 
 # zip 扩展
-RUN apt update && apt install -y --no-install-recommends libzip-dev && rm -r /var/lib/apt/lists/* && docker-php-ext-install -j$(nproc) zip
+RUN apt update && apt install -y libzip-dev zip unzip && rm -r /var/lib/apt/lists/* && docker-php-ext-install -j$(nproc) zip
 
 # opcache 扩展 
 RUN docker-php-ext-configure opcache --enable-opcache && docker-php-ext-install opcache
