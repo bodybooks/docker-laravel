@@ -68,6 +68,7 @@ services:
     volumes:
       - ./conf/php:/usr/local/etc/php-fpm.d
       - ./log/php:/var/log/php
+      - ./conf/root:/root
       - ./wwwroot:/var/www
     networks:
       - vpc
