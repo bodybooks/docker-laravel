@@ -10,7 +10,7 @@ docker-compose up    # 启动所有docker-compose服务
 docker-compose up -d    # 启动所有docker-compose服务并后台运行
 docker-compose down     # 停止并删除容器、网络、卷、镜像。
 docker-compose exec 服务id   # 进入容器实例内部
-docker-compose exec 服务id /bin/bash
+docker-compose exec -it 服务id /bin/bash
 docker-compose ps      # 展示当前docker-compose编排过的运行的所有容器
 docker-compose top       # 展示当前docker-compose编排过的容器进程
 docker-compose logs 服务id   # 查看容器输出日志
