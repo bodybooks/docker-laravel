@@ -1,13 +1,15 @@
 FROM php:8.2-fpm
 
+RUN mkdir -p /root/.ssh
+RUN chmod 700 /root/.ssh
+RUN touch /root/.ssh/id_rsa
+RUN touch /root/.ssh/id_rsa.pub
+RUN chmod 600 /root/.ssh/id_rsa /root/.ssh/id_rsa.pub
+
 RUN mkdir -p /var/www/web
 RUN chown -R www-data:www-data /var/www/web
 RUN chmod -R 755 /var/www/web
 WORKDIR /var/www/web
-
-# RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf
-# RUN sed -i "s/group = www-data/group = www/g" /usr/local/etc/php-fpm.d/www.conf
-# RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
 # composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer

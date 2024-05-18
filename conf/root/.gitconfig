@@ -1,0 +1,26 @@
+[user]
+	name = os.box
+	email = os.box@oosuite.com
+[credential]
+	helper = manager
+[alias]
+	co = checkout
+	com = checkout master
+	ci = commit
+	ca = commit -a
+	cm = commit -m
+	cam = commit -a -m
+	br = branch
+	st = status
+	pl = pull
+	plo = pull origin
+	ps = push
+	pso = push origin
+	df = diff
+	dt = difftool
+[core]
+	autocrlf = input
+	safecrlf = true
+	filemode = false
+[safe]
+	directory = *
